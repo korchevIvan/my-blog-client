@@ -15,6 +15,7 @@
 import {onMounted} from 'vue'
 import usePosts from "../api/usePosts"
 
+
 export default {
   name: "Home",
 

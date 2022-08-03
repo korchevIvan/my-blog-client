@@ -14,4 +14,3 @@ store.dispatch('authenticate').then(() => {
         .use(store)
         .mount('#app')
 })
-

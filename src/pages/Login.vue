@@ -8,6 +8,11 @@
             <input type="text" name="email" id="email"
                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                    placeholder="you@example.com" v-model="form.email">
+
+            <p class="mt-2 text-sm text-red-600" v-if="errors.email">
+              {{errors.email[0]}}
+            </p>
+
           </div>
         </div>
         <div>
@@ -16,6 +21,11 @@
             <input type="password" name="password" id="password"
                    class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
                    v-model="form.password">
+
+            <p class="mt-2 text-sm text-red-600" v-if="errors.password">
+              {{errors.password[0]}}
+            </p>
+
           </div>
         </div>
       </div>
@@ -30,11 +40,13 @@
 
 <script>
 import {useStore} from 'vuex'
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
 
 export default {
   setup() {
     const store = useStore()
+
+    const errors = ref({})
 
     const form = reactive({
       email: '',
@@ -42,11 +54,15 @@ export default {
     })
 
     const attemptLogin = () => {
-      store.dispatch('login', form)
+      store.dispatch('login', form).catch((e) => {
+        if (e.response.status === 422) {
+          errors.value = e.response.data.errors
+        }
+      })
     }
 
     return {
-      attemptLogin, form
+      attemptLogin, form, errors
     }
   }
 }

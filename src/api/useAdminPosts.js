@@ -16,9 +16,13 @@ export default function useAdminPosts() {
     }
 
     const createPost = async () => {
-        let response = await axios.post('/api/admin/posts/')
+        let response = await axios.post('/api/admin/posts')
 
         return response.data.data
+    }
+
+    const patchPost = async (uuid) => {
+        await axios.patch(`/api/admin/posts/${uuid}`, post.value)
     }
 
     return {
@@ -26,6 +30,7 @@ export default function useAdminPosts() {
         post,
         fetchPosts,
         fetchPost,
-        createPost
+        createPost,
+        patchPost
     }
 }

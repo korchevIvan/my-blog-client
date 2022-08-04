@@ -22,8 +22,9 @@ const routes = [
         path: '/admin/posts',
         name: 'admin.posts',
         component: Posts,
-        beforeEnter: (to, from, next) => {
-            if( !store.getters.authenticated ) {
+        beforeEnter: async (to, from, next) => {
+            let isAuthenticated = await store.getters.authenticated
+            if (!isAuthenticated) {
                 return next({ name: 'admin.login' })
             }
 
@@ -34,8 +35,9 @@ const routes = [
         path: '/admin/posts/:slug/edit',
         name: 'admin.posts.edit',
         component: Edit,
-        beforeEnter: (to, from, next) => {
-            if( !store.getters.authenticated ) {
+        beforeEnter: async (to, from, next) => {
+            let isAuthenticated = await store.getters.authenticated
+            if (!isAuthenticated) {
                 return next({ name: 'admin.login' })
             }
 

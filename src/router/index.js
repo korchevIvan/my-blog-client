@@ -35,6 +35,7 @@ const routes = [
         path: '/admin/posts/:slug/edit',
         name: 'admin.posts.edit',
         component: Edit,
+        props: true,
         beforeEnter: async (to, from, next) => {
             let isAuthenticated = await store.getters.authenticated
             if (!isAuthenticated) {

@@ -1,7 +1,9 @@
 <template>
   <div class="space-y-16">
     <button type="button"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+      v-on:click="newPost"
+    >
       New post
     </button>
 
@@ -35,16 +37,31 @@
 
 import useAdminPosts from "../../api/useAdminPosts"
 import {onMounted} from "vue"
-
+import {useRouter} from "vue-router";
 
 export default {
   setup() {
-    const {posts, fetchPosts} = useAdminPosts()
+    const {posts, fetchPosts, createPost} = useAdminPosts()
+    const router = useRouter()
+
+
+    const newPost = async () => {
+      let post = await createPost()
+
+      router.replace({
+        name: 'admin.posts.edit',
+        params: {
+          slug: post.uuid
+        }
+      })
+    }
 
     onMounted(fetchPosts)
 
+
     return {
-      posts
+      posts,
+      newPost
     }
   }
 }

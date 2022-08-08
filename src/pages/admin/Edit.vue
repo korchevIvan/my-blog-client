@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="absolute w-full left-0 top-0 p-6 flex justify-between items-center space-x-6">
+    <div class="absolute w-full left-0 top-0 p-6 flex justify-between items-center space-x-6" v-if="post.slug">
       <div class="flex-grow flex items-center">
         <span class="mr-1">/</span> <input type="text" class="p-0 border-none focus:ring-0 w-full" v-model="post.slug">
       </div>
@@ -40,7 +40,7 @@ import ResizeTextarea from "../../components/ResizeTextarea.vue";
 export default {
   components: {ResizeTextarea},
   props: {
-    slug: {
+    uuid: {
       required: true,
       type: String
     }
@@ -49,11 +49,11 @@ export default {
     const {post, fetchPost, patchPost} = useAdminPosts()
 
     const updatePost = async () => {
-      await patchPost(props.slug)
+      await patchPost(props.uuid)
     }
 
     onMounted(async () => {
-      await fetchPost(props.slug)
+      await fetchPost(props.uuid)
       watch(
           () => _.cloneDeep(post),
           _.debounce(

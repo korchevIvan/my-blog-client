@@ -7,7 +7,11 @@
       </div>
       <div class="flex items-center space-x-6">
         <div>
-          <span class="text-sm text-gray-500">{{ lastSaved.fromNow() }}</span>
+          <RelativeTime :date="lastSaved" v-if="lastSaved">
+            <template v-slot:default="{ fromNow }">
+              <span class="text-sm text-gray-500">{{ fromNow }}</span>
+            </template>
+          </RelativeTime>
         </div>
         <button
             v-on:click="post.published = !post.published"
@@ -51,13 +55,13 @@ import _ from 'lodash'
 import slugify from 'slugify'
 import ResizeTextarea from "../../components/ResizeTextarea.vue"
 import Editor from "../../components/Editor.vue"
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
+import RelativeTime from "../../components/RelativeTime.vue"
 
-dayjs.extend(relativeTime)
+import dayjs from 'dayjs'
+
 
 export default {
-  components: {Editor, ResizeTextarea},
+  components: {Editor, ResizeTextarea, RelativeTime},
   props: {
     uuid: {
       required: true,
@@ -67,7 +71,7 @@ export default {
   setup(props) {
     const {post, fetchPost, patchPost} = useAdminPosts()
 
-    const lastSaved = ref(dayjs())
+    const lastSaved = ref(null)
 
     const updatePost = async () => {
       await patchPost(props.uuid)

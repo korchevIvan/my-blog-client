@@ -8,5 +8,5 @@ Vue, Vuex, Vue router, Tailwind
 
 ## Команды
 
-<b>npm run dev</b> - запуск вотчера файлов
+<b>npm run dev</b> - запуск вотчера файлов <br/>
 <b>npm run build</b> - сборка фронта

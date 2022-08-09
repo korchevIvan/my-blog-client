@@ -25,7 +25,7 @@
             <router-link :to="{name: 'admin.posts.edit', params: {uuid: post.uuid}}" class="text-sm font-medium">Edit</router-link>
           </div>
           <div>
-            <button class="text-sm font-medium">Delete</button>
+            <button v-on:click="deletePost(post.uuid)" class="text-sm font-medium">Delete</button>
           </div>
         </div>
       </div>
@@ -41,9 +41,18 @@ import {useRouter} from "vue-router";
 
 export default {
   setup() {
-    const {posts, fetchPosts, createPost} = useAdminPosts()
+    const {posts, fetchPosts, createPost, destroyPost} = useAdminPosts()
     const router = useRouter()
 
+    const deletePost = async (uuid) => {
+      if (!window.confirm('You sure?')) {
+        return
+      }
+
+      await destroyPost(uuid)
+
+      posts.value = posts.value.filter(p => p.uuid !== uuid)
+    }
 
     const newPost = async () => {
       let post = await createPost()
@@ -61,7 +70,8 @@ export default {
 
     return {
       posts,
-      newPost
+      newPost,
+      deletePost
     }
   }
 }

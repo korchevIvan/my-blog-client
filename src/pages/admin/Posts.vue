@@ -48,10 +48,10 @@ export default {
     const newPost = async () => {
       let post = await createPost()
 
-      router.replace({
+      router.push({
         name: 'admin.posts.edit',
         params: {
-          slug: post.uuid
+          uuid: post.uuid
         }
       })
     }
